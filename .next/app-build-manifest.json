@@ -21,11 +21,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/aipod/page.js"
-    ],
-    "/hobbies/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/hobbies/page.js"
     ]
   }
 }

@@ -1,59 +1,63 @@
-import Image from 'next/image'
+"use client"
 
-const hobbies = [
+import { useState } from 'react'
+import { ProjectGrid, Project } from './hobbies/project-grid'
+import { ProjectDetail } from './hobbies/project-detail'
+
+// Sample data - replace with your actual data
+const sampleProjects: Project[] = [
   {
-    title: "Photography",
-    description: "Capturing moments and scenes through the lens",
-    image: "/placeholder.svg?height=400&width=600"
+    id: '1',
+    title: 'Data Analysis Dashboard',
+    description: 'Interactive dashboard for analyzing sales data with various visualizations and filters.',
+    thumbnail: '/projects/dashboard.jpg',
+    type: 'streamlit',
+    date: 'Jan 2024',
+    url: 'http://localhost:8501' // Replace with your Streamlit app URL
   },
   {
-    title: "Cooking",
-    description: "Experimenting with flavors and cuisines from around the world",
-    image: "/placeholder.svg?height=400&width=600"
+    id: '2',
+    title: 'Machine Learning Model',
+    description: 'A predictive model for forecasting market trends using historical data.',
+    thumbnail: '/projects/ml-model.jpg',
+    type: 'project',
+    date: 'Dec 2023'
   },
-  {
-    title: "Hiking",
-    description: "Exploring nature trails and enjoying scenic views",
-    image: "/placeholder.svg?height=400&width=600"
-  },
-  {
-    title: "Reading",
-    description: "Diving into books across various genres",
-    image: "/placeholder.svg?height=400&width=600"
-  },
-  {
-    title: "Painting",
-    description: "Expressing creativity through colors and brushstrokes",
-    image: "/placeholder.svg?height=400&width=600"
-  },
-  {
-    title: "Gardening",
-    description: "Nurturing plants and creating green spaces",
-    image: "/placeholder.svg?height=400&width=600"
-  }
+  // Add more projects...
 ]
 
 export function Hobbies() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [isDetailOpen, setIsDetailOpen] = useState(false)
+
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project)
+    setIsDetailOpen(true)
+  }
+
+  const handleClose = () => {
+    setIsDetailOpen(false)
+    setTimeout(() => setSelectedProject(null), 300) // Wait for exit animation
+  }
+
+  const handleProjectChange = (project: Project) => {
+    setSelectedProject(project)
+  }
+
   return (
-    <section className="space-y-12">
-      <h1 className="text-4xl font-bold">Hobbies & Interests</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {hobbies.map((hobby, index) => (
-          <div key={index} className="group">
-            <div className="relative aspect-video mb-4 overflow-hidden rounded-lg">
-              <Image
-                src={hobby.image}
-                alt={hobby.title}
-                fill
-                className="object-cover transition-transform group-hover:scale-105"
-              />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">{hobby.title}</h3>
-            <p className="text-muted-foreground">{hobby.description}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className="min-h-screen pt-20">
+      <ProjectGrid 
+        projects={sampleProjects} 
+        onProjectClick={handleProjectClick} 
+      />
+      <ProjectDetail
+        project={selectedProject}
+        allProjects={sampleProjects}
+        onClose={handleClose}
+        onProjectChange={handleProjectChange}
+        isOpen={isDetailOpen}
+      />
+    </div>
   )
 }
 
